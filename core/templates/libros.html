@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Catálogo de libros</title>
+
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f6f8;
+            margin: 0;
+        }
+
+        header {
+            background-color: #23476b;
+            color: white;
+            padding: 20px;
+        }
+
+        .encabezado {
+            width: 85%;
+            margin: auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .contenedor {
+            width: 85%;
+            margin: 30px auto;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            background-color: white;
+        }
+
+        th,
+        td {
+            border: 1px solid #cccccc;
+            padding: 12px;
+            text-align: left;
+        }
+
+        th {
+            background-color: #dce8f3;
+        }
+
+        .boton-salir {
+            padding: 10px 15px;
+            background-color: #b02a37;
+            color: white;
+            text-decoration: none;
+            border-radius: 5px;
+        }
+
+        .sin-registros {
+            padding: 20px;
+            background-color: white;
+            text-align: center;
+        }
+    </style>
+</head>
+
+<body>
+
+    <header>
+        <div class="encabezado">
+
+            <div>
+                <h1>Catálogo de libros</h1>
+                <p>
+                    Bienvenido, {{ request.user.username }}
+                </p>
+            </div>
+
+            <a href="{% url 'logout' %}" class="boton-salir">
+                Cerrar sesión
+            </a>
+
+        </div>
+    </header>
+
+    <main class="contenedor">
+
+        {% if libros %}
+
+            <table>
+
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Título</th>
+                        <th>Autor</th>
+                        <th>Género</th>
+                        <th>Año</th>
+                    </tr>
+                </thead>
+
+                <tbody>
+
+                    {% for libro in libros %}
+
+                        <tr>
+                            <td>{{ libro.id }}</td>
+                            <td>{{ libro.titulo }}</td>
+                            <td>{{ libro.autor }}</td>
+                            <td>{{ libro.genero }}</td>
+                            <td>{{ libro.anio }}</td>
+                        </tr>
+
+                    {% endfor %}
+
+                </tbody>
+
+            </table>
+
+        {% else %}
+
+            <p class="sin-registros">
+                No hay libros registrados.
+            </p>
+
+        {% endif %}
+
+    </main>
+
+</body>
+
+</html>

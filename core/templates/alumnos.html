@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Lista de alumnos</title>
+</head>
+<body>
+
+    <h1>Todos los estudiantes</h1>
+
+    <ul>
+        {% for estudiante in todos %}
+            <li>
+                {{ estudiante }} - Activo: {{ estudiante.activo }}
+            </li>
+        {% empty %}
+            <li>No existen estudiantes registrados.</li>
+        {% endfor %}
+    </ul>
+
+    <h2>Estudiantes activos</h2>
+
+    <ul>
+        {% for estudiante in activos %}
+            <li>{{ estudiante }}</li>
+        {% empty %}
+            <li>No existen estudiantes activos.</li>
+        {% endfor %}
+    </ul>
+
+    <form method="post" action="{% url 'logout' %}">
+        {% csrf_token %}
+        <button type="submit">Cerrar sesión</button>
+    </form>
+
+</body>
+</html>

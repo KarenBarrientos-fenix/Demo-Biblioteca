@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Consulta de registros</title>
+
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f6f8;
+            margin: 30px;
+        }
+
+        h1 {
+            color: #2468ad;
+            text-align: center;
+        }
+
+        h2 {
+            color: #333333;
+            margin-top: 35px;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            background-color: white;
+            margin-bottom: 40px;
+        }
+
+        th,
+        td {
+            border: 1px solid #999999;
+            padding: 10px;
+            text-align: center;
+        }
+
+        th {
+            background-color: #2468ad;
+            color: white;
+        }
+
+        tr:nth-child(even) {
+            background-color: #e9f1f8;
+        }
+
+        tr:hover {
+            background-color: #d7e7f5;
+        }
+
+        .si {
+            color: green;
+            font-weight: bold;
+        }
+
+        .no {
+            color: red;
+            font-weight: bold;
+        }
+
+        .mensaje {
+            text-align: center;
+            color: #777777;
+        }
+    </style>
+</head>
+
+<body>
+
+    <h1>Registros almacenados en la base de datos</h1>
+
+    <h2>Tabla de productos</h2>
+
+    <table>
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Nombre</th>
+                <th>Categoría</th>
+                <th>Precio</th>
+                <th>Existencia</th>
+                <th>Disponible</th>
+            </tr>
+        </thead>
+
+        <tbody>
+            {% for producto in productos %}
+                <tr>
+                    <td>{{ producto.id }}</td>
+                    <td>{{ producto.nombre }}</td>
+                    <td>{{ producto.categoria }}</td>
+                    <td>${{ producto.precio }}</td>
+                    <td>{{ producto.existencia }}</td>
+
+                    <td>
+                        {% if producto.disponible %}
+                            <span class="si">Sí</span>
+                        {% else %}
+                            <span class="no">No</span>
+                        {% endif %}
+                    </td>
+                </tr>
+            {% empty %}
+                <tr>
+                    <td colspan="6" class="mensaje">
+                        No existen productos registrados.
+                    </td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+
+    <h2>Tabla de libros</h2>
+
+    <table>
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Título</th>
+                <th>Autor</th>
+                <th>Género</th>
+                <th>Año de publicación</th>
+                <th>Páginas</th>
+            </tr>
+        </thead>
+
+        <tbody>
+            {% for libro in libros %}
+                <tr>
+                    <td>{{ libro.id }}</td>
+                    <td>{{ libro.titulo }}</td>
+                    <td>{{ libro.autor }}</td>
+                    <td>{{ libro.genero }}</td>
+                    <td>{{ libro.anio_publicacion }}</td>
+                    <td>{{ libro.paginas }}</td>
+                </tr>
+            {% empty %}
+                <tr>
+                    <td colspan="6" class="mensaje">
+                        No existen libros registrados.
+                    </td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+
+</body>
+</html>
