@@ -1,12 +1,11 @@
 from django.shortcuts import render
 from django.contrib.auth.decorators import login_required
-from .models import Estudiante, Grupo
-from .serializers import EstudianteSerializer, GrupoSerializer
+from .models import Grupo, Estudiante, Libro
+from .serializers import GrupoSerializer, EstudianteSerializer, LibroSerializer
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
 from rest_framework import status
 from .models import Grupo
-from .serializers import GrupoSerializer
 from django.shortcuts import render, redirect
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
@@ -83,11 +82,11 @@ def api_detalle_grupo(request, pk):
 def lista_libros(request):
     libros = Libro.objects.all()
 
-    contexto = {
-        'libros': libros
-    }
-
-    return render(request, 'libros.html', contexto)
+    return render(
+        request,
+        'libros.html',
+        {'libros': libros}
+    )
 
 def iniciar_sesion(request):
     mensaje = ''
@@ -125,3 +124,62 @@ def iniciar_sesion(request):
 def cerrar_sesion(request):
     logout(request)
     return redirect('login')
+
+@api_view(['GET', 'POST'])
+def api_lista_libros(request):
+
+    if request.method == 'GET':
+        libros = Libro.objects.all()
+        serializer = LibroSerializer(libros, many=True)
+        return Response(serializer.data)
+
+    elif request.method == 'POST':
+        serializer = LibroSerializer(data=request.data)
+
+        if serializer.is_valid():
+            serializer.save()
+
+            return Response(
+                serializer.data,
+                status=status.HTTP_201_CREATED
+            )
+
+        return Response(
+            serializer.errors,
+            status=status.HTTP_400_BAD_REQUEST
+        )
+@api_view(['GET', 'PUT', 'PATCH', 'DELETE'])
+def api_detalle_libro(request, pk):
+
+    try:
+        libro = Libro.objects.get(pk=pk)
+
+    except Libro.DoesNotExist:
+        return Response(
+            {'mensaje': 'Libro no encontrado'},
+            status=status.HTTP_404_NOT_FOUND
+        )
+
+    if request.method == 'GET':
+        serializer = LibroSerializer(libro)
+        return Response(serializer.data)
+
+    elif request.method in ['PUT', 'PATCH']:
+        serializer = LibroSerializer(
+            libro,
+            data=request.data,
+            partial=(request.method == 'PATCH')
+        )
+
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data)
+
+        return Response(
+            serializer.errors,
+            status=status.HTTP_400_BAD_REQUEST
+        )
+
+    elif request.method == 'DELETE':
+        libro.delete()
+        return Response(status=status.HTTP_204_NO_CONTENT)

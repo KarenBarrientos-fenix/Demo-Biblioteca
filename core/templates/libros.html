@@ -96,8 +96,8 @@
                         <th>ID</th>
                         <th>Título</th>
                         <th>Autor</th>
-                        <th>Género</th>
-                        <th>Año</th>
+                        <th>ISBN</th>
+                        <th>Disponibilidad</th>
                     </tr>
                 </thead>
 
@@ -109,8 +109,14 @@
                             <td>{{ libro.id }}</td>
                             <td>{{ libro.titulo }}</td>
                             <td>{{ libro.autor }}</td>
-                            <td>{{ libro.genero }}</td>
-                            <td>{{ libro.anio }}</td>
+                            <td>{{ libro.isbn }}</td>
+                            <td>
+                                {% if libro.disponible %}
+                                    Disponible
+                                {% else %}
+                                    Prestado
+                                {% endif %}
+                            </td>
                         </tr>
 
                     {% endfor %}
